@@ -1,0 +1,143 @@
+/*
+ Theme Name: Popularis Verse
+ Theme URI: https://populariswp.com/popularis-verse/
+ Description: Popularis Verse is a fast, clean and modern-looking responsive multipurpose theme for WordPress. Theme works perfect with any of favorite page builders like Elementor, Beaver Builder, SiteOrigin, Thrive Architect, Divi, Visual Composer, etc. Popularis Verse is WooCommerce ready, lightweight, easy to use, responsive and SEO friendly. Demo ready to import: https://populariswp.com/popularis-verse-demo/
+ Author: Themes4WP
+ Author URI: https://themes4wp.com/
+ Version: 1.0.3
+ Requires PHP: 5.6
+ Tested up to: 6.8
+ License: GNU General Public License v3
+ License URI: http://www.gnu.org/licenses/gpl.html
+ Tags: one-column, two-columns, full-width-template, right-sidebar, custom-background, custom-menu, editor-style, featured-images, translation-ready, custom-logo, threaded-comments, footer-widgets, blog, e-commerce
+ Text Domain: popularis-verse
+ Template: popularis
+*/
+
+body {
+    font-size: 20px;
+}
+a, a:active, a:hover, a:focus {
+    color: #ffaa0c;
+    text-decoration: none;
+}
+.widget-title:after {
+    background-color: #FCBC45;
+    bottom: 16px;
+    top: 26px;
+}
+.widget-title h3 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0px;
+    line-height: 1.6;
+    padding: 8px;
+}
+#site-navigation {
+    background-color: rgb(255 255 255 / 68%);
+    border-bottom: 1px solid rgb(0 0 0 / 4%);
+    z-index: 99;
+    font-weight: 600;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #4d4d4d
+}
+.nav > li.active > a:after, .current-page-parent:after {
+    top: auto;
+    bottom: 0;
+}
+.nav > li.active > a:hover:after, .current-page-parent:hover:after {
+    width: 70%;
+    left: 15%;
+}
+article.blog-article {
+    clear: none;
+}
+h1.site-title a, .site-title a {
+    color: #000;
+}
+.cat-links a:after {
+    content: "/";
+    margin: 0 3px 0 5px;
+    color: initial;
+    letter-spacing: -2px;
+}
+.cat-links a:last-child:after {
+    content: "";
+}
+.single-entry-summary, .cats-tags, .single-head {
+    max-width: 100%;
+}
+.post-item h2 a {
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: 600;
+}
+article.blog-article:nth-of-type(2n-1) {
+    clear: both;
+}
+.top-bar-section {
+    background-color: #FCBC45;
+}
+.top-bar-section a {
+    color: #000000;
+}
+.news-thumb {
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    padding: 0;
+}
+.about-author-avatar {
+    float: left;
+    margin-right: 15px;
+}
+li.menu-button-outline a {
+    padding: 10px 15px;
+    border: 2px solid;
+    border-radius: 5px;
+    margin-top: 8px;
+    color: #000 !important;
+    margin-left: 10px;
+    font-size: 16px;
+}
+li.menu-button a {
+    padding: 10px 15px;
+    border: 2px solid;
+    border-radius: 5px;
+    margin-top: 8px;
+    color: #fff !important;
+    background-color: #000 !important;
+    margin-left: 10px;
+    font-size: 16px;
+}
+li.menu-button-outline:hover, li.menu-button:hover {
+    background-color: transparent !important;
+}
+.cart-contents span.count, .woocommerce span.onsale, .nav > li.active > a:after, .current-page-parent:after, .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus, .woocommerce .widget_price_filter .ui-slider .ui-slider-range, .woocommerce .widget_price_filter .ui-slider .ui-slider-handle {
+    background-color: #FCBC45;
+}
+.woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover, .woocommerce #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover, .woocommerce input.button.alt:hover, .btn-default, input[type="submit"], input#submit, button, a.comment-reply-link, .woocommerce div.product .woocommerce-tabs ul.tabs li a, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt {
+    color: #FCBC45;
+}
+.woocommerce div.product .woocommerce-tabs ul.tabs.wc-tabs li.active a, .woocommerce div.product .woocommerce-tabs ul.tabs.wc-tabs li:hover a {
+    border-bottom: 2px solid #FCBC45;
+    color: #FCBC45;
+}
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+    text-align: center;
+}
+@media (max-width: 991px) {
+    .author-avatar {
+        top: auto;
+        bottom: -20px;
+        right: 50%;
+        margin-top: 0;
+        margin-left: -16px;
+    }
+}
+@media (min-width: 768px) {
+.navbar-default .navbar-nav > li:hover {
+        background-color: rgb(252 188 69 / 16%);
+        color: #fff;
+    }
+}

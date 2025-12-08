@@ -1,0 +1,50 @@
+# Translation of Themes - Popularis Verse in Spanish (Spain)
+# This file is distributed under the same license as the Themes - Popularis Verse package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-10-09 19:18:59+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: es\n"
+"Project-Id-Version: Themes - Popularis Verse\n"
+
+#. Description of the theme
+#: style.css
+#, gp-priority: high
+msgid "Popularis Verse is a fast, clean and modern-looking responsive multipurpose theme for WordPress. Theme works perfect with any of favorite page builders like Elementor, Beaver Builder, SiteOrigin, Thrive Architect, Divi, Visual Composer, etc. Popularis Verse is WooCommerce ready, lightweight, easy to use, responsive and SEO friendly. Demo ready to import: https://populariswp.com/popularis-verse-demo/"
+msgstr "Popularis Verse es un tema de blog rápido, limpio y moderno para WordPress. El tema funciona perfectamente con cualquiera de los constructores de páginas favoritos como Elementor, Beaver Builder, SiteOrigin, Thrive Architect, Divi, Visual Composer, etc. Popularis Verse está preparado para WooCommerce, es ligero, fácil de usar y está optimizado para SEO. Demo: https://populariswp.com/popularis-verse-demo/"
+
+#. Theme Name of the theme
+#: style.css
+#, gp-priority: high
+msgid "Popularis Verse"
+msgstr "Popularis Verse"
+
+#: single.php:45
+msgid "About The Author"
+msgstr "Sobre el autor"
+
+#: functions.php:43
+msgid "Homepage main menu"
+msgstr "Menú principal de la página de inicio"
+
+#. Author URI of the theme
+#: style.css
+#, gp-priority: low
+msgid "https://themes4wp.com/"
+msgstr "https://themes4wp.com/"
+
+#. Author of the theme
+#: style.css
+#, gp-priority: low
+msgid "Themes4WP"
+msgstr "Themes4WP"
+
+#. Theme URI of the theme
+#: style.css
+#, gp-priority: low
+msgid "https://populariswp.com/popularis-verse/"
+msgstr "https://populariswp.com/popularis-verse/"
