@@ -50,6 +50,11 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             scrollWheelZoom: true
         }).setView([41.3851, 2.1734], 13);
 
+        // Aseguramos que el lienzo del mapa calcula bien el tamaño después de montar el DOM
+        setTimeout(function () {
+            map.invalidateSize();
+        }, 120);
+
         // Mosaico tipo Carto Voyager
         L.tileLayer(
             'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
