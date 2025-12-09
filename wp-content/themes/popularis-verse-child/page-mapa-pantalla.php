@@ -50,10 +50,15 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             scrollWheelZoom: true
         }).setView([41.3851, 2.1734], 13);
 
-        // Aseguramos que el lienzo del mapa calcula bien el tamaño después de montar el DOM
-        setTimeout(function () {
+        function refreshMapSize() {
             map.invalidateSize();
-        }, 120);
+        }
+
+        // Fuerza el recálculo del canvas en los momentos clave para evitar que se quede en negro
+        map.whenReady(refreshMapSize);
+        window.addEventListener('load', refreshMapSize);
+        window.addEventListener('resize', refreshMapSize);
+        setTimeout(refreshMapSize, 200);
 
         // Mosaico tipo Carto Voyager
         L.tileLayer(
