@@ -80,10 +80,12 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             return [lat, lng];
         }
 
-        // Icono tipo burbuja (se estiliza por CSS)
-        var bubbleIcon = L.divIcon({
-            className: 'br-bubble-marker',
-            iconSize: [20, 20]
+        // Icono personalizado inspirado en el pin rojo clásico
+        var pinIcon = L.icon({
+            iconUrl: '<?php echo esc_url( get_stylesheet_directory_uri() . '/map-pin-red.svg' ); ?>',
+            iconSize: [32, 48],
+            iconAnchor: [16, 46],
+            className: 'br-pin-marker'
         });
 
         var markers = [];
@@ -92,7 +94,7 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
         // Creamos los marcadores, inicialmente ocultos (sin clase is-visible)
         for (var i = 0; i < totalMarkers; i++) {
             var marker = L.marker(randomLatLng(), {
-                icon: bubbleIcon
+                icon: pinIcon
             }).addTo(map);
             markers.push(marker);
         }
