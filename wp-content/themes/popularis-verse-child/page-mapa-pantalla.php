@@ -50,16 +50,6 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             scrollWheelZoom: true
         }).setView([41.3851, 2.1734], 13);
 
-        function refreshMapSize() {
-            map.invalidateSize();
-        }
-
-        // Fuerza el recálculo del canvas en los momentos clave para evitar que se quede en negro
-        map.whenReady(refreshMapSize);
-        window.addEventListener('load', refreshMapSize);
-        window.addEventListener('resize', refreshMapSize);
-        setTimeout(refreshMapSize, 200);
-
         // Mosaico tipo Carto Voyager
         L.tileLayer(
             'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
@@ -118,7 +108,7 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             }
         }
 
-        function shugit ffleMarkers() {
+        function shuffleMarkers() {
             markers.forEach(function (marker) {
                 // 50% de probabilidad de mostrarse
                 if (Math.random() < 0.5) {

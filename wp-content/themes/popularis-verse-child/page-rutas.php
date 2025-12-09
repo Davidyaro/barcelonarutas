@@ -32,7 +32,6 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
     <!-- Menú flotante renacentista -->
     <nav class="br-float-menu" aria-label="Selector de vistas">
         <a href="<?php echo home_url( '/historias/' ); ?>" class="br-pill">Historias</a>
-        <a href="<?php echo home_url( '/rutas/' ); ?>" class="br-pill">Rutas</a>
     </nav>
 
     <!-- Leaflet JS (CDN) -->
