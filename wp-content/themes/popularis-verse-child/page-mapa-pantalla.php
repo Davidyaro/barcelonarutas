@@ -83,7 +83,7 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
         // Icono tipo burbuja (se estiliza por CSS)
         var bubbleIcon = L.divIcon({
             className: 'br-bubble-marker',
-            iconSize: [26, 26]
+            iconSize: [20, 20]
         });
 
         var markers = [];
@@ -108,27 +108,23 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             }
         }
 
-        function scheduleMarker(marker) {
-            var delay = 900 + Math.random() * 2400; // 0.9s–3.3s entre cambios
-
-            setTimeout(function () {
-                var shouldShow = Math.random() < 0.65; // algo más de probabilidad de verse
-
-                if (shouldShow) {
+        function shugit ffleMarkers() {
+            markers.forEach(function (marker) {
+                // 50% de probabilidad de mostrarse
+                if (Math.random() < 0.5) {
                     marker.setLatLng(randomLatLng());
-                    setMarkerVisible(marker, true);
+                    setMarkerVisible(marker, true);  // aparece con animación
                 } else {
-                    setMarkerVisible(marker, false);
+                    setMarkerVisible(marker, false); // desaparece con animación
                 }
-
-                scheduleMarker(marker);
-            }, delay);
+            });
         }
 
-        // Primera “oleada” de puntos, cada uno con su ritmo
-        markers.forEach(function (marker) {
-            scheduleMarker(marker);
-        });
+        // Primera “oleada” de puntos
+        shuffleMarkers();
+
+        // Cada 3 segundos cambiamos posiciones / visibilidad
+        setInterval(shuffleMarkers, 3000);
     });
     </script>
 
