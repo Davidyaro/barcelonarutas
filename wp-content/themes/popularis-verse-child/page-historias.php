@@ -35,7 +35,7 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
         <button type="button" class="br-pill" id="br-toggle-markers" aria-pressed="true">
             Historias: ON
         </button>
-        <div class="br-dropdown" data-open="false">
+        <div class="br-dropdown" data-open="false" data-type="districts">
             <button type="button" class="br-pill br-dropdown__trigger" id="br-districts-toggle" aria-expanded="false">
                 Districtes
             </button>
@@ -50,6 +50,94 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
                 <button type="button" class="br-dropdown__option" data-district="Nou Barris">Nou Barris</button>
                 <button type="button" class="br-dropdown__option" data-district="Sant Andreu">Sant Andreu</button>
                 <button type="button" class="br-dropdown__option" data-district="Sant Martí">Sant Martí</button>
+            </div>
+        </div>
+        <div class="br-dropdown" data-open="false" data-type="neighborhoods">
+            <button type="button" class="br-pill br-dropdown__trigger" id="br-neighborhoods-toggle" aria-expanded="false">
+                Barrios
+            </button>
+            <div class="br-dropdown__panel" aria-label="Barrios de Barcelona">
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Raval">el Raval</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Barri Gòtic">el Barri Gòtic</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Barceloneta">la Barceloneta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Pere, Santa Caterina i la Ribera">Sant Pere, Santa Caterina i la Ribera</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="l’Antiga Esquerra de l’Eixample">l’Antiga Esquerra de l’Eixample</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Nova Esquerra de l’Eixample">la Nova Esquerra de l’Eixample</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Dreta de l’Eixample">la Dreta de l’Eixample</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Sagrada Família">la Sagrada Família</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Fort Pienc">el Fort Pienc</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Antoni">Sant Antoni</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Poble-sec">el Poble-sec</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Marina del Prat Vermell">la Marina del Prat Vermell</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Marina de Port">la Marina de Port</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Font de la Guatlla">la Font de la Guatlla</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Hostafrancs">Hostafrancs</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Bordeta">la Bordeta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sants–Badal">Sants–Badal</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sants">Sants</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="les Corts">les Corts</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Maternitat i Sant Ramon">la Maternitat i Sant Ramon</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Pedralbes">Pedralbes</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="Vallvidrera, el Tibidabo i les Planes">Vallvidrera, el Tibidabo i les Planes</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sarrià">Sarrià</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="les Tres Torres">les Tres Torres</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Gervasi–Bonanova">Sant Gervasi–Bonanova</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Gervasi–Galvany">Sant Gervasi–Galvany</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Putxet i el Farró">el Putxet i el Farró</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="Vallcarca i els Penitents">Vallcarca i els Penitents</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Coll">el Coll</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Salut">la Salut</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Vila de Gràcia">la Vila de Gràcia</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Camp d’en Grassot i Gràcia Nova">el Camp d’en Grassot i Gràcia Nova</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Baix Guinardó">el Baix Guinardó</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Can Baró">Can Baró</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Guinardó">el Guinardó</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Font d’en Fargues">la Font d’en Fargues</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Carmel">el Carmel</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Teixonera">la Teixonera</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Genís dels Agudells">Sant Genís dels Agudells</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Montbau">Montbau</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Horta">Horta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Clota">la Clota</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="Vilapicina i la Torre Llobeta">Vilapicina i la Torre Llobeta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Porta">Porta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Turó de la Peira">el Turó de la Peira</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Can Peguera">Can Peguera</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Guineueta">la Guineueta</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Canyelles">Canyelles</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="les Roquetes">les Roquetes</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Verdun">Verdun</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Prosperitat">la Prosperitat</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Trinitat Nova">la Trinitat Nova</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Torre Baró">Torre Baró</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Ciutat Meridiana">Ciutat Meridiana</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Vallbona">Vallbona</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Trinitat Vella">la Trinitat Vella</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Baró de Viver">Baró de Viver</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Bon Pastor">el Bon Pastor</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Andreu">Sant Andreu</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Sagrera">la Sagrera</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Congrés i els Indians">el Congrés i els Indians</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Navas">Navas</button>
+
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Camp de l’Arpa del Clot">el Camp de l’Arpa del Clot</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Clot">el Clot</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Parc i la Llacuna del Poblenou">el Parc i la Llacuna del Poblenou</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Vila Olímpica del Poblenou">la Vila Olímpica del Poblenou</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Poblenou">el Poblenou</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Diagonal Mar i el Front Marítim del Poblenou">Diagonal Mar i el Front Marítim del Poblenou</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="el Besòs i el Maresme">el Besòs i el Maresme</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Provençals del Poblenou">Provençals del Poblenou</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="Sant Martí de Provençals">Sant Martí de Provençals</button>
+                <button type="button" class="br-dropdown__option" data-neighborhood="la Verneda i la Pau">la Verneda i la Pau</button>
             </div>
         </div>
     </nav>
@@ -186,9 +274,12 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
 
         // --- Distritos de Barcelona ---
         var districtLayer = null;
-        var dropdown = document.querySelector('.br-dropdown');
-        var dropdownTrigger = document.getElementById('br-districts-toggle');
-        var dropdownPanel = document.querySelector('.br-dropdown__panel');
+        var neighborhoodLayer = null;
+        var districtDropdown = document.querySelector('.br-dropdown[data-type="districts"]');
+        var districtTrigger = document.getElementById('br-districts-toggle');
+        var neighborhoodDropdown = document.querySelector('.br-dropdown[data-type="neighborhoods"]');
+        var neighborhoodTrigger = document.getElementById('br-neighborhoods-toggle');
+        var registeredDropdowns = [];
 
         function highlightDistrict(name) {
             if (!districtLayer) return;
@@ -220,35 +311,85 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             }
         }
 
-        function toggleDropdown(open) {
-            if (!dropdown || !dropdownTrigger || !dropdownPanel) return;
-            dropdown.dataset.open = open ? 'true' : 'false';
-            dropdownTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        function highlightNeighborhood(name) {
+            if (!neighborhoodLayer) return;
+            var matchedLayer = null;
+
+            neighborhoodLayer.eachLayer(function (layer) {
+                var props = layer.feature && layer.feature.properties;
+                var neighborhoodName =
+                    (props && (props.NOM || props.BARRI || props.BARRI_NOM || props.NOM_CAS)) || '';
+                var isMatch = neighborhoodName === name;
+
+                if (isMatch) {
+                    matchedLayer = layer;
+                    layer.setStyle({
+                        color: '#f59f4b',
+                        weight: 3,
+                        fillColor: '#f59f4b',
+                        fillOpacity: 0.15
+                    });
+                } else {
+                    layer.setStyle({
+                        color: '#f5e2b8',
+                        weight: 1,
+                        fillColor: '#f5e2b8',
+                        fillOpacity: 0.05
+                    });
+                }
+            });
+
+            if (matchedLayer) {
+                map.fitBounds(matchedLayer.getBounds(), { padding: [40, 40] });
+                matchedLayer.bringToFront();
+            }
         }
 
-        if (dropdownTrigger) {
-            dropdownTrigger.addEventListener('click', function () {
-                var isOpen = dropdown && dropdown.dataset.open === 'true';
-                toggleDropdown(!isOpen);
-            });
+        function toggleDropdown(dropdownEl, triggerEl, open) {
+            if (!dropdownEl || !triggerEl) return;
+            dropdownEl.dataset.open = open ? 'true' : 'false';
+            triggerEl.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
 
-        if (dropdownPanel) {
-            dropdownPanel.addEventListener('click', function (event) {
-                var target = event.target;
-                if (!target.matches('.br-dropdown__option')) return;
-                var districtName = target.getAttribute('data-district');
-                highlightDistrict(districtName);
-                toggleDropdown(false);
+        function setupDropdown(dropdownEl, triggerEl, onSelect) {
+            if (!dropdownEl || !triggerEl) return;
+            var panelEl = dropdownEl.querySelector('.br-dropdown__panel');
+            registeredDropdowns.push({ dropdownEl: dropdownEl, triggerEl: triggerEl });
+
+            triggerEl.addEventListener('click', function () {
+                var isOpen = dropdownEl.dataset.open === 'true';
+                registeredDropdowns.forEach(function (item) {
+                    toggleDropdown(item.dropdownEl, item.triggerEl, item.dropdownEl === dropdownEl && !isOpen);
+                });
             });
+
+            if (panelEl) {
+                panelEl.addEventListener('click', function (event) {
+                    var target = event.target;
+                    if (!target.matches('.br-dropdown__option')) return;
+                    onSelect(target);
+                    toggleDropdown(dropdownEl, triggerEl, false);
+                });
+            }
         }
+
+        setupDropdown(districtDropdown, districtTrigger, function (target) {
+            var districtName = target.getAttribute('data-district');
+            highlightDistrict(districtName);
+        });
+
+        setupDropdown(neighborhoodDropdown, neighborhoodTrigger, function (target) {
+            var neighborhoodName = target.getAttribute('data-neighborhood');
+            highlightNeighborhood(neighborhoodName);
+        });
 
         document.addEventListener('click', function (event) {
-            if (!dropdown) return;
-            var isInside = dropdown.contains(event.target);
-            if (!isInside) {
-                toggleDropdown(false);
-            }
+            registeredDropdowns.forEach(function (item) {
+                var isInside = item.dropdownEl.contains(event.target);
+                if (!isInside) {
+                    toggleDropdown(item.dropdownEl, item.triggerEl, false);
+                }
+            });
         });
 
         fetch('https://raw.githubusercontent.com/jcanalesluna/bcn-geodata/master/districtes/districtes.geojson')
@@ -271,6 +412,26 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             })
             .catch(function (error) {
                 console.error('No se pudieron cargar los distritos:', error);
+            });
+
+        fetch('https://raw.githubusercontent.com/jcanalesluna/bcn-geodata/master/barris/barris.geojson')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                neighborhoodLayer = L.geoJSON(data, {
+                    style: function () {
+                        return {
+                            color: '#f5e2b8',
+                            weight: 1,
+                            fillColor: '#f5e2b8',
+                            fillOpacity: 0.05
+                        };
+                    }
+                }).addTo(map);
+            })
+            .catch(function (error) {
+                console.error('No se pudieron cargar los barrios:', error);
             });
     });
     </script>
