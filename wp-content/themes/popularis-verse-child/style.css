@@ -145,8 +145,8 @@ body,
 
 /* Imagen SVG con animación suave de aparición */
 .leaflet-marker-icon.br-pin-marker {
-    width: 32px;
-    height: 48px;
+    width: 30px;
+    height: 46px;
     opacity: 0;
     transform: translateY(6px) scale(0.85);
     transform-origin: center bottom;
