@@ -116,6 +116,8 @@ body,
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(6px);
     z-index: 1200;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 .br-dropdown__option {
