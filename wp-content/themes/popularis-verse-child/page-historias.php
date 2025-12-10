@@ -32,6 +32,26 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
     <!-- Menú flotante renacentista -->
     <nav class="br-float-menu" aria-label="Selector de vistas">
         <a href="<?php echo home_url( '/rutas/' ); ?>" class="br-pill">Rutas</a>
+        <button type="button" class="br-pill" id="br-toggle-markers" aria-pressed="true">
+            Historias: ON
+        </button>
+        <div class="br-dropdown" data-open="false">
+            <button type="button" class="br-pill br-dropdown__trigger" id="br-districts-toggle" aria-expanded="false">
+                Districtes
+            </button>
+            <div class="br-dropdown__panel" aria-label="Districtes de Barcelona">
+                <button type="button" class="br-dropdown__option" data-district="Ciutat Vella">Ciutat Vella</button>
+                <button type="button" class="br-dropdown__option" data-district="Eixample">Eixample</button>
+                <button type="button" class="br-dropdown__option" data-district="Sants-Montjuïc">Sants-Montjuïc</button>
+                <button type="button" class="br-dropdown__option" data-district="Les Corts">Les Corts</button>
+                <button type="button" class="br-dropdown__option" data-district="Sarrià–Sant Gervasi">Sarrià–Sant Gervasi</button>
+                <button type="button" class="br-dropdown__option" data-district="Gràcia">Gràcia</button>
+                <button type="button" class="br-dropdown__option" data-district="Horta-Guinardó">Horta-Guinardó</button>
+                <button type="button" class="br-dropdown__option" data-district="Nou Barris">Nou Barris</button>
+                <button type="button" class="br-dropdown__option" data-district="Sant Andreu">Sant Andreu</button>
+                <button type="button" class="br-dropdown__option" data-district="Sant Martí">Sant Martí</button>
+            </div>
+        </div>
     </nav>
 
     <!-- Leaflet JS (CDN) -->
@@ -121,11 +141,137 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
             });
         }
 
-        // Primera “oleada” de puntos
-        shuffleMarkers();
+        // Gestión de animación de marcadores
+        var shuffleInterval = null;
+        var shuffleActive = true;
+        var toggleButton = document.getElementById('br-toggle-markers');
 
-        // Cada 3 segundos cambiamos posiciones / visibilidad
-        setInterval(shuffleMarkers, 3000);
+        function updateToggleButton() {
+            if (!toggleButton) return;
+            toggleButton.textContent = shuffleActive ? 'Historias: ON' : 'Historias: OFF';
+            toggleButton.setAttribute('aria-pressed', shuffleActive ? 'true' : 'false');
+        }
+
+        function startShuffle() {
+            shuffleMarkers();
+            shuffleInterval = setInterval(shuffleMarkers, 3000);
+            shuffleActive = true;
+            updateToggleButton();
+        }
+
+        function stopShuffle() {
+            if (shuffleInterval) {
+                clearInterval(shuffleInterval);
+                shuffleInterval = null;
+            }
+            markers.forEach(function (marker) {
+                setMarkerVisible(marker, false);
+            });
+            shuffleActive = false;
+            updateToggleButton();
+        }
+
+        if (toggleButton) {
+            toggleButton.addEventListener('click', function () {
+                if (shuffleActive) {
+                    stopShuffle();
+                } else {
+                    startShuffle();
+                }
+            });
+        }
+
+        // Primera “oleada” de puntos y arranque de la animación
+        startShuffle();
+
+        // --- Distritos de Barcelona ---
+        var districtLayer = null;
+        var dropdown = document.querySelector('.br-dropdown');
+        var dropdownTrigger = document.getElementById('br-districts-toggle');
+        var dropdownPanel = document.querySelector('.br-dropdown__panel');
+
+        function highlightDistrict(name) {
+            if (!districtLayer) return;
+            var matchedLayer = null;
+
+            districtLayer.eachLayer(function (layer) {
+                var isMatch = layer.feature && layer.feature.properties && layer.feature.properties.NOM === name;
+                if (isMatch) {
+                    matchedLayer = layer;
+                    layer.setStyle({
+                        color: '#f5c14b',
+                        weight: 3,
+                        fillColor: '#f5c14b',
+                        fillOpacity: 0.15
+                    });
+                } else {
+                    layer.setStyle({
+                        color: '#f5e2b8',
+                        weight: 1,
+                        fillColor: '#f5e2b8',
+                        fillOpacity: 0.05
+                    });
+                }
+            });
+
+            if (matchedLayer) {
+                map.fitBounds(matchedLayer.getBounds(), { padding: [40, 40] });
+                matchedLayer.bringToFront();
+            }
+        }
+
+        function toggleDropdown(open) {
+            if (!dropdown || !dropdownTrigger || !dropdownPanel) return;
+            dropdown.dataset.open = open ? 'true' : 'false';
+            dropdownTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        if (dropdownTrigger) {
+            dropdownTrigger.addEventListener('click', function () {
+                var isOpen = dropdown && dropdown.dataset.open === 'true';
+                toggleDropdown(!isOpen);
+            });
+        }
+
+        if (dropdownPanel) {
+            dropdownPanel.addEventListener('click', function (event) {
+                var target = event.target;
+                if (!target.matches('.br-dropdown__option')) return;
+                var districtName = target.getAttribute('data-district');
+                highlightDistrict(districtName);
+                toggleDropdown(false);
+            });
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!dropdown) return;
+            var isInside = dropdown.contains(event.target);
+            if (!isInside) {
+                toggleDropdown(false);
+            }
+        });
+
+        fetch('https://raw.githubusercontent.com/jcanalesluna/bcn-geodata/master/districtes/districtes.geojson')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                districtLayer = L.geoJSON(data, {
+                    style: function () {
+                        return {
+                            color: '#f5e2b8',
+                            weight: 1,
+                            fillColor: '#f5e2b8',
+                            fillOpacity: 0.05
+                        };
+                    }
+                }).addTo(map);
+
+                map.fitBounds(districtLayer.getBounds(), { padding: [30, 30] });
+            })
+            .catch(function (error) {
+                console.error('No se pudieron cargar los distritos:', error);
+            });
     });
     </script>
 
