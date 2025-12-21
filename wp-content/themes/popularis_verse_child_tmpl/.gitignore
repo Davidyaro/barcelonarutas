@@ -1,0 +1,19 @@
+# WordPress básico
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/debug.log
+
+# Dependencias típicas
+node_modules/
+vendor/
+
+# Entornos locales (Devilbox, Docker, etc.)
+devilbox/
+.env
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+git

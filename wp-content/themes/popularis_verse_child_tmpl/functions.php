@@ -1,11 +1,10 @@
 <?php
-
 // Exit if accessed directly
-if (!defined('ABSPATH'))
+if (!defined('ABSPATH')) {
     exit;
+}
 
-
-if (!function_exists('popularis_verse_parent_css')):
+if (!function_exists('popularis_verse_parent_css')) :
 
     /**
      * Enqueue CSS.
@@ -18,12 +17,17 @@ if (!function_exists('popularis_verse_parent_css')):
             $dep = array('bootstrap', 'popularis-woocommerce');
         }
 
+        // Parent
+        wp_enqueue_style($parent_style, get_template_directory_uri() . '/style.css', $dep);
+
+        // Child
         wp_enqueue_style(
-    'popularis-verse-child',
-    get_stylesheet_directory_uri() . '/style.css',
-    array($parent_style),
-    wp_get_theme()->get('Version')
-);
+            'popularis-verse-child',
+            get_stylesheet_directory_uri() . '/style.css',
+            array($parent_style),
+            wp_get_theme()->get('Version')
+        );
+    }
 
 endif;
 
@@ -36,21 +40,23 @@ if (!function_exists('popularis_verse_setup')) :
      */
     function popularis_verse_setup() {
 
-        // Register extra menu for homepage. Loaded only on homepage - definded in template-part-header.php
+        // Register extra menu for homepage. Loaded only on homepage - defined in template-part-header.php
         register_nav_menus(
-                array(
-                    'main_menu_home' => esc_html__('Homepage main menu', 'popularis-verse'),
-                )
+            array(
+                'main_menu_home' => esc_html__('Homepage main menu', 'popularis-verse'),
+            )
         );
 
         // Child theme language
-load_child_theme_textdomain('popularis-verse-child', get_stylesheet_directory() . '/languages');
+        load_child_theme_textdomain('popularis-verse-child', get_stylesheet_directory() . '/languages');
     }
 
 endif;
 
 add_action('after_setup_theme', 'popularis_verse_setup');
 
+// OJO: deja esta línea SOLO si existe la función popularis_customizer() (en el parent o en un plugin).
+// Si no existe, te dará un fatal error.
 add_action('init', 'popularis_customizer');
 
 if (!function_exists('popularis_verse_excerpt_length')) :
@@ -60,7 +66,7 @@ if (!function_exists('popularis_verse_excerpt_length')) :
      */
     function popularis_verse_excerpt_length($length) {
         if (is_home() || is_archive()) { // Make sure to not limit pagebuilders
-            return '24';
+            return 24;
         } else {
             return $length;
         }

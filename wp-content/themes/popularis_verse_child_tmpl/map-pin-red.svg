@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 96" width="64" height="96" role="img" aria-label="Marcador rojo">
+  <defs>
+    <linearGradient id="pinGradient" x1="0" y1="0" x2="64" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff3b3b" />
+      <stop offset="1" stop-color="#c70000" />
+    </linearGradient>
+    <mask id="pinCutout" maskUnits="userSpaceOnUse">
+      <rect width="64" height="96" fill="white" />
+      <circle cx="32" cy="28" r="11" fill="black" />
+    </mask>
+  </defs>
+  <path
+    d="M32 0C14.3 0 0 14.3 0 32c0 17.7 32 64 32 64s32-46.3 32-64C64 14.3 49.7 0 32 0Z"
+    fill="url(#pinGradient)"
+    mask="url(#pinCutout)"
+  />
+</svg>
