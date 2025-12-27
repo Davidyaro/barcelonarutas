@@ -47,19 +47,17 @@ function brc_rest_map_stories(WP_REST_Request $request): WP_REST_Response {
         ],
         [
             'key' => 'br_show_on_map',
-            'value' => true,
+            'value' => 1,
+            'compare' => '=',
         ],
         [
-            'key' => 'br_lat',
+            'key' => 'br_location',
             'compare' => 'EXISTS',
         ],
-        [
-            'key' => 'br_lng',
-            'compare' => 'EXISTS',
-        ],
+
     ];
 
-    if (!empty($filters['bbox'])) {
+    /*if (!empty($filters['bbox'])) {
         $bbox = brc_sanitize_bbox((string) $filters['bbox']);
         if ($bbox) {
             $meta_query[] = [
@@ -75,7 +73,7 @@ function brc_rest_map_stories(WP_REST_Request $request): WP_REST_Response {
                 'type' => 'NUMERIC',
             ];
         }
-    }
+    }*/
 
     $year_from = $filters['year_from'] !== null ? (int) $filters['year_from'] : null;
     $year_to = $filters['year_to'] !== null ? (int) $filters['year_to'] : null;
@@ -172,11 +170,21 @@ function brc_rest_map_stories(WP_REST_Request $request): WP_REST_Response {
     $items = [];
 
     foreach ($query->posts as $post) {
-        $lat = get_post_meta($post->ID, 'br_lat', true);
-        $lng = get_post_meta($post->ID, 'br_lng', true);
-        if ($lat === '' || $lng === '') {
-            continue;
-        }
+$location = get_post_meta($post->ID, 'br_location', true);
+
+// ACF a veces guarda como array, a veces como string serializado.
+// Nos aseguramos de tener array:
+if (is_string($location)) {
+    $maybe = maybe_unserialize($location);
+    if (is_array($maybe)) $location = $maybe;
+}
+
+$lat = $location['lat'] ?? null;
+$lng = $location['lng'] ?? null;
+
+if ($lat === null || $lng === null || $lat === '' || $lng === '') {
+    continue;
+}
 
         $tags = [];
         $terms = wp_get_object_terms($post->ID, array_values($taxonomy_filters));
