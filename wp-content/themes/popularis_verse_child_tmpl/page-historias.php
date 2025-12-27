@@ -29,6 +29,58 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
         <div id="br-map"></div>
     </div>
 
+    <?php
+    $districts = array(
+        array('name' => 'Ciutat Vella', 'slug' => 'ciutat-vella'),
+        array('name' => 'Eixample', 'slug' => 'eixample'),
+        array('name' => 'Sants-Montjuïc', 'slug' => 'sants-montjuic'),
+        array('name' => 'Les Corts', 'slug' => 'les-corts'),
+        array('name' => 'Sarrià–Sant Gervasi', 'slug' => 'sarria-sant-gervasi'),
+        array('name' => 'Gràcia', 'slug' => 'gracia'),
+        array('name' => 'Horta-Guinardó', 'slug' => 'horta-guinardo'),
+        array('name' => 'Nou Barris', 'slug' => 'nou-barris'),
+        array('name' => 'Sant Andreu', 'slug' => 'sant-andreu'),
+        array('name' => 'Sant Martí', 'slug' => 'sant-marti'),
+    );
+
+    $district_terms = get_terms(array(
+        'taxonomy' => 'br_district',
+        'hide_empty' => false,
+    ));
+
+    if (!is_wp_error($district_terms) && !empty($district_terms)) {
+        $districts = array();
+        foreach ($district_terms as $term) {
+            $districts[] = array(
+                'name' => $term->name,
+                'slug' => $term->slug,
+            );
+        }
+    }
+
+    $periods = array(
+        array('name' => 'Edad Media', 'slug' => 'edad-media'),
+        array('name' => 'Edad Moderna', 'slug' => 'edad-moderna'),
+        array('name' => 'Siglo XIX', 'slug' => 'siglo-xix'),
+        array('name' => 'Siglo XX', 'slug' => 'siglo-xx'),
+    );
+
+    $period_terms = get_terms(array(
+        'taxonomy' => 'br_period',
+        'hide_empty' => false,
+    ));
+
+    if (!is_wp_error($period_terms) && !empty($period_terms)) {
+        $periods = array();
+        foreach ($period_terms as $term) {
+            $periods[] = array(
+                'name' => $term->name,
+                'slug' => $term->slug,
+            );
+        }
+    }
+    ?>
+
     <!-- Menú flotante renacentista -->
     <nav class="br-float-menu" aria-label="Selector de vistas">
         <a href="<?php echo home_url( '/rutas/' ); ?>" class="br-pill">Rutas</a>
@@ -40,16 +92,23 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
                 Districtes
             </button>
             <div class="br-dropdown__panel" aria-label="Districtes de Barcelona">
-                <button type="button" class="br-dropdown__option" data-district="Ciutat Vella">Ciutat Vella</button>
-                <button type="button" class="br-dropdown__option" data-district="Eixample">Eixample</button>
-                <button type="button" class="br-dropdown__option" data-district="Sants-Montjuïc">Sants-Montjuïc</button>
-                <button type="button" class="br-dropdown__option" data-district="Les Corts">Les Corts</button>
-                <button type="button" class="br-dropdown__option" data-district="Sarrià–Sant Gervasi">Sarrià–Sant Gervasi</button>
-                <button type="button" class="br-dropdown__option" data-district="Gràcia">Gràcia</button>
-                <button type="button" class="br-dropdown__option" data-district="Horta-Guinardó">Horta-Guinardó</button>
-                <button type="button" class="br-dropdown__option" data-district="Nou Barris">Nou Barris</button>
-                <button type="button" class="br-dropdown__option" data-district="Sant Andreu">Sant Andreu</button>
-                <button type="button" class="br-dropdown__option" data-district="Sant Martí">Sant Martí</button>
+                <?php foreach ($districts as $district) : ?>
+                    <button type="button" class="br-dropdown__option" data-district-name="<?php echo esc_attr($district['name']); ?>" data-district-slug="<?php echo esc_attr($district['slug']); ?>">
+                        <?php echo esc_html($district['name']); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="br-dropdown" data-open="false" data-type="periods">
+            <button type="button" class="br-pill br-dropdown__trigger" id="br-periods-toggle" aria-expanded="false">
+                Épocas
+            </button>
+            <div class="br-dropdown__panel" aria-label="Épocas de Barcelona">
+                <?php foreach ($periods as $period) : ?>
+                    <button type="button" class="br-dropdown__option" data-period-slug="<?php echo esc_attr($period['slug']); ?>">
+                        <?php echo esc_html($period['name']); ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
         </div>
         <div class="br-dropdown" data-open="false" data-type="neighborhoods">
@@ -142,299 +201,29 @@ Template Name: Mapa Pantalla Completa (Leaflet sin header)
         </div>
     </nav>
 
+    <aside class="br-story-drawer" id="br-story-drawer" aria-hidden="true">
+        <button type="button" class="br-story-drawer__close" aria-label="<?php esc_attr_e('Cerrar', 'popularis-verse-child'); ?>">
+            ×
+        </button>
+        <div class="br-story-drawer__content">
+            <p class="br-story-drawer__eyebrow">Historia</p>
+            <h2 class="br-story-drawer__title"></h2>
+            <p class="br-story-drawer__subtitle"></p>
+            <div class="br-story-drawer__meta"></div>
+            <div class="br-story-drawer__terms"></div>
+            <div class="br-story-drawer__body"></div>
+            <a class="br-story-drawer__link is-hidden" href="#" target="_blank" rel="noopener">
+                <?php esc_html_e('Leer completa', 'popularis-verse-child'); ?>
+            </a>
+        </div>
+    </aside>
+
     <!-- Leaflet JS (CDN) -->
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""
     ></script>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Centro aproximado de Barcelona
-        var map = L.map('br-map', {
-            zoomControl: true,
-            scrollWheelZoom: true
-        }).setView([41.3851, 2.1734], 13);
-
-        // Mosaico tipo Carto Voyager
-        L.tileLayer(
-            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            {
-                maxZoom: 19,
-                subdomains: 'abcd',
-                attribution:
-                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
-                    'contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            }
-        ).addTo(map);
-
-        // Zona recortada: centro de Barcelona + L'Hospitalet
-        var bounds = {
-            latMin: 41.35,  // parte baja (L'Hospitalet / Sants)
-            latMax: 41.42,  // evitamos demasiada montaña
-            lngMin: 2.11,   // un poco hacia el interior
-            lngMax: 2.19    // sin meterse en mar abierto
-        };
-
-        function randomLatLng() {
-            var lat =
-                bounds.latMin +
-                Math.random() * (bounds.latMax - bounds.latMin);
-            var lng =
-                bounds.lngMin +
-                Math.random() * (bounds.lngMax - bounds.lngMin);
-            return [lat, lng];
-        }
-
-        // Icono personalizado inspirado en el pin rojo clásico
-        var pinIcon = L.icon({
-            iconUrl: '<?php echo esc_url( get_stylesheet_directory_uri() . '/map-pin-red.svg' ); ?>',
-            iconSize: [32, 48],
-            iconAnchor: [16, 46],
-            className: 'br-pin-marker'
-        });
-
-        var markers = [];
-        var totalMarkers = 7; // 6–7 puntos aleatorios
-
-        // Creamos los marcadores, inicialmente ocultos (sin clase is-visible)
-        for (var i = 0; i < totalMarkers; i++) {
-            var marker = L.marker(randomLatLng(), {
-                icon: pinIcon
-            }).addTo(map);
-            markers.push(marker);
-        }
-
-        function setMarkerVisible(marker, visible) {
-            var el = marker.getElement();
-            if (!el) return;
-
-            if (visible) {
-                el.classList.add('is-visible');
-            } else {
-                el.classList.remove('is-visible');
-            }
-        }
-
-        function shuffleMarkers() {
-            markers.forEach(function (marker) {
-                // 50% de probabilidad de mostrarse
-                if (Math.random() < 0.5) {
-                    marker.setLatLng(randomLatLng());
-                    setMarkerVisible(marker, true);  // aparece con animación
-                } else {
-                    setMarkerVisible(marker, false); // desaparece con animación
-                }
-            });
-        }
-
-        // Gestión de animación de marcadores
-        var shuffleInterval = null;
-        var shuffleActive = true;
-        var toggleButton = document.getElementById('br-toggle-markers');
-
-        function updateToggleButton() {
-            if (!toggleButton) return;
-            toggleButton.textContent = shuffleActive ? 'Historias: ON' : 'Historias: OFF';
-            toggleButton.setAttribute('aria-pressed', shuffleActive ? 'true' : 'false');
-        }
-
-        function startShuffle() {
-            shuffleMarkers();
-            shuffleInterval = setInterval(shuffleMarkers, 3000);
-            shuffleActive = true;
-            updateToggleButton();
-        }
-
-        function stopShuffle() {
-            if (shuffleInterval) {
-                clearInterval(shuffleInterval);
-                shuffleInterval = null;
-            }
-            markers.forEach(function (marker) {
-                setMarkerVisible(marker, false);
-            });
-            shuffleActive = false;
-            updateToggleButton();
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', function () {
-                if (shuffleActive) {
-                    stopShuffle();
-                } else {
-                    startShuffle();
-                }
-            });
-        }
-
-        // Primera “oleada” de puntos y arranque de la animación
-        startShuffle();
-
-        // --- Distritos de Barcelona ---
-        var districtLayer = null;
-        var neighborhoodLayer = null;
-        var districtDropdown = document.querySelector('.br-dropdown[data-type="districts"]');
-        var districtTrigger = document.getElementById('br-districts-toggle');
-        var neighborhoodDropdown = document.querySelector('.br-dropdown[data-type="neighborhoods"]');
-        var neighborhoodTrigger = document.getElementById('br-neighborhoods-toggle');
-        var registeredDropdowns = [];
-
-        function highlightDistrict(name) {
-            if (!districtLayer) return;
-            var matchedLayer = null;
-
-            districtLayer.eachLayer(function (layer) {
-                var isMatch = layer.feature && layer.feature.properties && layer.feature.properties.NOM === name;
-                if (isMatch) {
-                    matchedLayer = layer;
-                    layer.setStyle({
-                        color: '#f5c14b',
-                        weight: 3,
-                        fillColor: '#f5c14b',
-                        fillOpacity: 0.15
-                    });
-                } else {
-                    layer.setStyle({
-                        color: '#f5e2b8',
-                        weight: 1,
-                        fillColor: '#f5e2b8',
-                        fillOpacity: 0.05
-                    });
-                }
-            });
-
-            if (matchedLayer) {
-                map.fitBounds(matchedLayer.getBounds(), { padding: [40, 40] });
-                matchedLayer.bringToFront();
-            }
-        }
-
-        function highlightNeighborhood(name) {
-            if (!neighborhoodLayer) return;
-            var matchedLayer = null;
-
-            neighborhoodLayer.eachLayer(function (layer) {
-                var props = layer.feature && layer.feature.properties;
-                var neighborhoodName =
-                    (props && (props.NOM || props.BARRI || props.BARRI_NOM || props.NOM_CAS)) || '';
-                var isMatch = neighborhoodName === name;
-
-                if (isMatch) {
-                    matchedLayer = layer;
-                    layer.setStyle({
-                        color: '#f59f4b',
-                        weight: 3,
-                        fillColor: '#f59f4b',
-                        fillOpacity: 0.15
-                    });
-                } else {
-                    layer.setStyle({
-                        color: '#f5e2b8',
-                        weight: 1,
-                        fillColor: '#f5e2b8',
-                        fillOpacity: 0.05
-                    });
-                }
-            });
-
-            if (matchedLayer) {
-                map.fitBounds(matchedLayer.getBounds(), { padding: [40, 40] });
-                matchedLayer.bringToFront();
-            }
-        }
-
-        function toggleDropdown(dropdownEl, triggerEl, open) {
-            if (!dropdownEl || !triggerEl) return;
-            dropdownEl.dataset.open = open ? 'true' : 'false';
-            triggerEl.setAttribute('aria-expanded', open ? 'true' : 'false');
-        }
-
-        function setupDropdown(dropdownEl, triggerEl, onSelect) {
-            if (!dropdownEl || !triggerEl) return;
-            var panelEl = dropdownEl.querySelector('.br-dropdown__panel');
-            registeredDropdowns.push({ dropdownEl: dropdownEl, triggerEl: triggerEl });
-
-            triggerEl.addEventListener('click', function () {
-                var isOpen = dropdownEl.dataset.open === 'true';
-                registeredDropdowns.forEach(function (item) {
-                    toggleDropdown(item.dropdownEl, item.triggerEl, item.dropdownEl === dropdownEl && !isOpen);
-                });
-            });
-
-            if (panelEl) {
-                panelEl.addEventListener('click', function (event) {
-                    var target = event.target;
-                    if (!target.matches('.br-dropdown__option')) return;
-                    onSelect(target);
-                    toggleDropdown(dropdownEl, triggerEl, false);
-                });
-            }
-        }
-
-        setupDropdown(districtDropdown, districtTrigger, function (target) {
-            var districtName = target.getAttribute('data-district');
-            highlightDistrict(districtName);
-        });
-
-        setupDropdown(neighborhoodDropdown, neighborhoodTrigger, function (target) {
-            var neighborhoodName = target.getAttribute('data-neighborhood');
-            highlightNeighborhood(neighborhoodName);
-        });
-
-        document.addEventListener('click', function (event) {
-            registeredDropdowns.forEach(function (item) {
-                var isInside = item.dropdownEl.contains(event.target);
-                if (!isInside) {
-                    toggleDropdown(item.dropdownEl, item.triggerEl, false);
-                }
-            });
-        });
-
-        fetch('https://raw.githubusercontent.com/jcanalesluna/bcn-geodata/master/districtes/districtes.geojson')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                districtLayer = L.geoJSON(data, {
-                    style: function () {
-                        return {
-                            color: '#f5e2b8',
-                            weight: 1,
-                            fillColor: '#f5e2b8',
-                            fillOpacity: 0.05
-                        };
-                    }
-                }).addTo(map);
-
-                map.fitBounds(districtLayer.getBounds(), { padding: [30, 30] });
-            })
-            .catch(function (error) {
-                console.error('No se pudieron cargar los distritos:', error);
-            });
-
-        fetch('https://raw.githubusercontent.com/jcanalesluna/bcn-geodata/master/barris/barris.geojson')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                neighborhoodLayer = L.geoJSON(data, {
-                    style: function () {
-                        return {
-                            color: '#f5e2b8',
-                            weight: 1,
-                            fillColor: '#f5e2b8',
-                            fillOpacity: 0.05
-                        };
-                    }
-                }).addTo(map);
-            })
-            .catch(function (error) {
-                console.error('No se pudieron cargar los barrios:', error);
-            });
-    });
-    </script>
 
     <?php wp_footer(); ?>
 </body>
