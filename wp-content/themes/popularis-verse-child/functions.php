@@ -309,6 +309,152 @@ function br_save_story_metaboxes($post_id) {
 
 add_action('save_post_br_story', 'br_save_story_metaboxes');
 
+function br_register_story_acf_fields() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+
+    if (function_exists('acf_get_local_field_group')) {
+        $existing = acf_get_local_field_group('group_br_story_fields');
+        if (!empty($existing)) {
+            return;
+        }
+    }
+
+    acf_add_local_field_group(array(
+        'key' => 'group_br_story_fields',
+        'title' => 'Historia',
+        'fields' => array(
+            array(
+                'key' => 'field_br_id_internal',
+                'label' => 'ID interno',
+                'name' => 'br_id_internal',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_br_subtitle',
+                'label' => 'Subtitulo',
+                'name' => 'br_subtitle',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_br_full_address_approx',
+                'label' => 'Dirección',
+                'name' => 'br_full_address_approx',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_br_lat',
+                'label' => 'Latitud',
+                'name' => 'br_lat',
+                'type' => 'number',
+                'required' => 1,
+                'step' => '0.000001',
+            ),
+            array(
+                'key' => 'field_br_lng',
+                'label' => 'Longitud',
+                'name' => 'br_lng',
+                'type' => 'number',
+                'required' => 1,
+                'step' => '0.000001',
+            ),
+            array(
+                'key' => 'field_br_year_start',
+                'label' => 'Año inicio',
+                'name' => 'br_year_start',
+                'type' => 'number',
+            ),
+            array(
+                'key' => 'field_br_year_end',
+                'label' => 'Año fin',
+                'name' => 'br_year_end',
+                'type' => 'number',
+            ),
+            array(
+                'key' => 'field_br_reading_time_min',
+                'label' => 'Tiempo de lectura',
+                'name' => 'br_reading_time_min',
+                'type' => 'number',
+            ),
+            array(
+                'key' => 'field_br_status',
+                'label' => 'Estado',
+                'name' => 'br_status',
+                'type' => 'select',
+                'choices' => array(
+                    'pending' => 'Pendiente',
+                    'reviewed' => 'Revisada',
+                    'approved' => 'Aprobada',
+                ),
+                'default_value' => 'pending',
+                'ui' => 1,
+            ),
+            array(
+                'key' => 'field_br_show_on_map',
+                'label' => 'Mostrar en el mapa',
+                'name' => 'br_show_on_map',
+                'type' => 'true_false',
+                'ui' => 1,
+                'default_value' => 1,
+            ),
+            array(
+                'key' => 'field_br_source',
+                'label' => 'Fuente',
+                'name' => 'br_source',
+                'type' => 'url',
+            ),
+            array(
+                'key' => 'field_br_author_text',
+                'label' => 'Autor del texto',
+                'name' => 'br_author_text',
+                'type' => 'text',
+            ),
+            array(
+                'key' => 'field_br_internal_notes',
+                'label' => 'Notas internas',
+                'name' => 'br_internal_notes',
+                'type' => 'textarea',
+            ),
+            array(
+                'key' => 'field_br_img',
+                'label' => 'Imagen',
+                'name' => 'br_img',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'library' => 'all',
+            ),
+            array(
+                'key' => 'field_br_location',
+                'label' => 'Ubicación en el mapa',
+                'name' => 'br_location',
+                'type' => 'google_map',
+                'center_lat' => 41.3874,
+                'center_lng' => 2.1686,
+                'zoom' => 13,
+                'height' => 400,
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'br_story',
+                ),
+            ),
+        ),
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'active' => true,
+    ));
+}
+
+add_action('acf/init', 'br_register_story_acf_fields');
+
 function br_register_story_map_endpoint() {
     register_rest_route('br/v1', '/map/stories', array(
         'methods' => 'GET',
