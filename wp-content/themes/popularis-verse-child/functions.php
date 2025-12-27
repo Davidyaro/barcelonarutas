@@ -64,7 +64,7 @@ function br_enqueue_map_assets() {
         'page-mapa-pantalla.php',
     );
 
-    if (!is_page_template($map_templates)) {
+    if (!is_page_template($map_templates) && !is_post_type_archive('br_story')) {
         return;
     }
 
@@ -85,7 +85,7 @@ function br_enqueue_map_assets() {
         'restUrl' => rest_url('br/v1/map/stories'),
     );
 
-    if (is_page_template('page-historias.php')) {
+    if (is_page_template('page-historias.php') || is_post_type_archive('br_story')) {
         $config['enableToggle'] = true;
         $config['enableGeoFilters'] = true;
     }
