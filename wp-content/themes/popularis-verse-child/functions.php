@@ -219,11 +219,37 @@ function br_render_story_details_metabox($post) {
     $subtitle = get_post_meta($post->ID, 'br_story_subtitle', true);
     $status = get_post_meta($post->ID, 'br_story_status', true);
     $show_on_map = get_post_meta($post->ID, 'br_show_on_map', true);
+    $id_internal = get_post_meta($post->ID, 'br_id_internal', true);
+    $full_address = get_post_meta($post->ID, 'br_full_address_approx', true);
+    $year_start = get_post_meta($post->ID, 'br_year_start', true);
+    $year_end = get_post_meta($post->ID, 'br_year_end', true);
+    $reading_time = get_post_meta($post->ID, 'br_reading_time_min', true);
+    $source = get_post_meta($post->ID, 'br_source', true);
+    $author_text = get_post_meta($post->ID, 'br_author_text', true);
+    $internal_notes = get_post_meta($post->ID, 'br_internal_notes', true);
+    $image_id = get_post_meta($post->ID, 'br_img', true);
+    $location = get_post_meta($post->ID, 'br_location', true);
+    if (is_string($location)) {
+        $maybe_location = maybe_unserialize($location);
+        if (is_array($maybe_location)) {
+            $location = $maybe_location;
+        }
+    }
+    $location_lat = is_array($location) ? ($location['lat'] ?? '') : '';
+    $location_lng = is_array($location) ? ($location['lng'] ?? '') : '';
 
     ?>
     <p>
         <label for="br-story-subtitle"><?php esc_html_e('Subtítulo', 'popularis-verse-child'); ?></label>
         <input type="text" name="br_story_subtitle" id="br-story-subtitle" class="widefat" value="<?php echo esc_attr($subtitle); ?>" />
+    </p>
+    <p>
+        <label for="br-id-internal"><?php esc_html_e('ID interno', 'popularis-verse-child'); ?></label>
+        <input type="text" name="br_id_internal" id="br-id-internal" class="widefat" value="<?php echo esc_attr($id_internal); ?>" />
+    </p>
+    <p>
+        <label for="br-full-address-approx"><?php esc_html_e('Dirección', 'popularis-verse-child'); ?></label>
+        <input type="text" name="br_full_address_approx" id="br-full-address-approx" class="widefat" value="<?php echo esc_attr($full_address); ?>" />
     </p>
     <p>
         <label for="br-story-lat"><?php esc_html_e('Latitud', 'popularis-verse-child'); ?></label>
@@ -232,6 +258,26 @@ function br_render_story_details_metabox($post) {
     <p>
         <label for="br-story-lng"><?php esc_html_e('Longitud', 'popularis-verse-child'); ?></label>
         <input type="number" step="0.000001" name="br_story_lng" id="br-story-lng" class="widefat" value="<?php echo esc_attr($lng); ?>" />
+    </p>
+    <p>
+        <label for="br-location-lat"><?php esc_html_e('Ubicación en el mapa (lat)', 'popularis-verse-child'); ?></label>
+        <input type="number" step="0.000001" name="br_location_lat" id="br-location-lat" class="widefat" value="<?php echo esc_attr($location_lat); ?>" />
+    </p>
+    <p>
+        <label for="br-location-lng"><?php esc_html_e('Ubicación en el mapa (lng)', 'popularis-verse-child'); ?></label>
+        <input type="number" step="0.000001" name="br_location_lng" id="br-location-lng" class="widefat" value="<?php echo esc_attr($location_lng); ?>" />
+    </p>
+    <p>
+        <label for="br-year-start"><?php esc_html_e('Año inicio', 'popularis-verse-child'); ?></label>
+        <input type="number" name="br_year_start" id="br-year-start" class="widefat" value="<?php echo esc_attr($year_start); ?>" />
+    </p>
+    <p>
+        <label for="br-year-end"><?php esc_html_e('Año fin', 'popularis-verse-child'); ?></label>
+        <input type="number" name="br_year_end" id="br-year-end" class="widefat" value="<?php echo esc_attr($year_end); ?>" />
+    </p>
+    <p>
+        <label for="br-reading-time-min"><?php esc_html_e('Tiempo de lectura (min)', 'popularis-verse-child'); ?></label>
+        <input type="number" name="br_reading_time_min" id="br-reading-time-min" class="widefat" value="<?php echo esc_attr($reading_time); ?>" />
     </p>
     <p>
         <label for="br-story-status"><?php esc_html_e('Estado', 'popularis-verse-child'); ?></label>
@@ -259,6 +305,22 @@ function br_render_story_details_metabox($post) {
             <input type="checkbox" name="br_show_on_map" value="1" <?php checked($show_on_map, '1'); ?> />
             <?php esc_html_e('Mostrar en mapa', 'popularis-verse-child'); ?>
         </label>
+    </p>
+    <p>
+        <label for="br-source"><?php esc_html_e('Fuente', 'popularis-verse-child'); ?></label>
+        <input type="url" name="br_source" id="br-source" class="widefat" value="<?php echo esc_attr($source); ?>" />
+    </p>
+    <p>
+        <label for="br-author-text"><?php esc_html_e('Autor del texto', 'popularis-verse-child'); ?></label>
+        <input type="text" name="br_author_text" id="br-author-text" class="widefat" value="<?php echo esc_attr($author_text); ?>" />
+    </p>
+    <p>
+        <label for="br-internal-notes"><?php esc_html_e('Notas internas', 'popularis-verse-child'); ?></label>
+        <textarea name="br_internal_notes" id="br-internal-notes" class="widefat" rows="4"><?php echo esc_textarea($internal_notes); ?></textarea>
+    </p>
+    <p>
+        <label for="br-img"><?php esc_html_e('Imagen (ID adjunto)', 'popularis-verse-child'); ?></label>
+        <input type="number" name="br_img" id="br-img" class="widefat" value="<?php echo esc_attr($image_id); ?>" />
     </p>
     <?php
 }
@@ -294,6 +356,15 @@ function br_save_story_metaboxes($post_id) {
         'br_story_lng' => 'floatval',
         'br_story_subtitle' => 'sanitize_text_field',
         'br_story_status' => 'sanitize_text_field',
+        'br_id_internal' => 'sanitize_text_field',
+        'br_full_address_approx' => 'sanitize_text_field',
+        'br_year_start' => 'absint',
+        'br_year_end' => 'absint',
+        'br_reading_time_min' => 'absint',
+        'br_source' => 'esc_url_raw',
+        'br_author_text' => 'sanitize_text_field',
+        'br_internal_notes' => 'sanitize_textarea_field',
+        'br_img' => 'absint',
     );
 
     foreach ($fields as $field => $sanitize) {
@@ -305,6 +376,12 @@ function br_save_story_metaboxes($post_id) {
 
     $show_on_map = isset($_POST['br_show_on_map']) ? '1' : '0';
     update_post_meta($post_id, 'br_show_on_map', $show_on_map);
+
+    $location_lat = isset($_POST['br_location_lat']) ? floatval(wp_unslash($_POST['br_location_lat'])) : null;
+    $location_lng = isset($_POST['br_location_lng']) ? floatval(wp_unslash($_POST['br_location_lng'])) : null;
+    if ($location_lat !== null && $location_lng !== null && $location_lat !== 0.0 && $location_lng !== 0.0) {
+        update_post_meta($post_id, 'br_location', array('lat' => $location_lat, 'lng' => $location_lng));
+    }
 }
 
 add_action('save_post_br_story', 'br_save_story_metaboxes');
