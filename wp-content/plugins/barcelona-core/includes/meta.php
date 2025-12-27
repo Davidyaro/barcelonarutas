@@ -18,6 +18,8 @@ function brc_register_meta(): void {
         'br_source' => ['type' => 'string'],
         'br_author_text' => ['type' => 'string'],
         'br_internal_notes' => ['type' => 'string'],
+        'br_img' => ['type' => 'integer'],
+        'br_location' => ['type' => 'array'],
     ];
 
     foreach ($story_meta as $key => $conf) {
@@ -31,6 +33,13 @@ function brc_register_meta(): void {
                     return brc_get_enum($allowed, (string)$value, 'pending');
                 }
                 if ($key === 'br_show_on_map') return brc_bool($value);
+                if ($key === 'br_img') return absint($value);
+                if ($key === 'br_location') {
+                    if (is_string($value)) {
+                        $value = maybe_unserialize($value);
+                    }
+                    return is_array($value) ? $value : [];
+                }
                 return is_string($value) ? sanitize_text_field($value) : $value;
             },
             // Solo admins pueden editar notas internas

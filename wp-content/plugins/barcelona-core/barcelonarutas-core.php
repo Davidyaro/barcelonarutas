@@ -16,6 +16,7 @@ require_once BRC_PATH . 'includes/helpers.php';
 require_once BRC_PATH . 'includes/post-types.php';
 require_once BRC_PATH . 'includes/taxonomies.php';
 require_once BRC_PATH . 'includes/meta.php';
+require_once BRC_PATH . 'includes/acf-fields.php';
 require_once BRC_PATH . 'includes/rest.php';
 
 add_action('init', 'brc_register_post_types');
