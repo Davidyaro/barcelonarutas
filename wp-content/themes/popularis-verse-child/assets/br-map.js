@@ -11,16 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var config = window.brMapConfig || {};
     var center = Array.isArray(config.center) ? config.center : [41.3851, 2.1734];
     var zoom = typeof config.zoom === 'number' ? config.zoom : 13;
-    var bounds = config.bounds || {
-        latMin: 41.35,
-        latMax: 41.42,
-        lngMin: 2.11,
-        lngMax: 2.19
-    };
-    var markersCount = typeof config.markersCount === 'number' ? config.markersCount : 7;
-    var enableShuffle = config.enableShuffle !== false;
     var enableToggle = !!config.enableToggle;
     var enableGeoFilters = !!config.enableGeoFilters;
+    var restUrl = typeof config.restUrl === 'string' ? config.restUrl : '';
 
     // Centro aproximado de Barcelona
     var map = L.map('br-map', {
@@ -40,16 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).addTo(map);
 
-    function randomLatLng() {
-        var lat =
-            bounds.latMin +
-            Math.random() * (bounds.latMax - bounds.latMin);
-        var lng =
-            bounds.lngMin +
-            Math.random() * (bounds.lngMax - bounds.lngMin);
-        return [lat, lng];
-    }
-
     var pinIcon = L.icon({
         iconUrl: config.pinUrl || '',
         iconSize: [32, 48],
@@ -57,41 +40,27 @@ document.addEventListener('DOMContentLoaded', function () {
         className: 'br-pin-marker'
     });
 
-    var markers = [];
-    var shuffleInterval = null;
-    var shuffleActive = enableShuffle;
+    var markersLayer = L.layerGroup().addTo(map);
+    var markersEnabled = true;
     var toggleButton = document.getElementById('br-toggle-markers');
+    var activeFilters = {
+        district: '',
+        period: ''
+    };
+    var activeRequest = null;
 
-    if (enableShuffle && markersCount > 0) {
-        for (var i = 0; i < markersCount; i++) {
-            var marker = L.marker(randomLatLng(), {
+    function clearMarkers() {
+        markersLayer.clearLayers();
+    }
+
+    function renderMarkers(items) {
+        clearMarkers();
+
+        items.forEach(function (item) {
+            var marker = L.marker([item.lat, item.lng], {
                 icon: pinIcon
-            }).addTo(map);
-            markers.push(marker);
-        }
-    }
-
-    function setMarkerVisible(marker, visible) {
-        var el = marker.getElement();
-        if (!el) {
-            return;
-        }
-
-        if (visible) {
-            el.classList.add('is-visible');
-        } else {
-            el.classList.remove('is-visible');
-        }
-    }
-
-    function shuffleMarkers() {
-        markers.forEach(function (marker) {
-            if (Math.random() < 0.5) {
-                marker.setLatLng(randomLatLng());
-                setMarkerVisible(marker, true);
-            } else {
-                setMarkerVisible(marker, false);
-            }
+            });
+            marker.addTo(markersLayer);
         });
     }
 
@@ -99,41 +68,83 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!toggleButton) {
             return;
         }
-        toggleButton.textContent = shuffleActive ? 'Historias: ON' : 'Historias: OFF';
-        toggleButton.setAttribute('aria-pressed', shuffleActive ? 'true' : 'false');
+        toggleButton.textContent = markersEnabled ? 'Historias: ON' : 'Historias: OFF';
+        toggleButton.setAttribute('aria-pressed', markersEnabled ? 'true' : 'false');
     }
 
-    function startShuffle() {
-        shuffleMarkers();
-        shuffleInterval = setInterval(shuffleMarkers, 3000);
-        shuffleActive = true;
-        updateToggleButton();
-    }
-
-    function stopShuffle() {
-        if (shuffleInterval) {
-            clearInterval(shuffleInterval);
-            shuffleInterval = null;
+    function buildStoryQuery() {
+        if (!restUrl) {
+            return '';
         }
-        markers.forEach(function (marker) {
-            setMarkerVisible(marker, false);
-        });
-        shuffleActive = false;
-        updateToggleButton();
+
+        var mapBounds = map.getBounds();
+        var bbox = [
+            mapBounds.getWest(),
+            mapBounds.getSouth(),
+            mapBounds.getEast(),
+            mapBounds.getNorth()
+        ].join(',');
+
+        var params = new URLSearchParams();
+        params.set('bbox', bbox);
+
+        if (activeFilters.district) {
+            params.set('district', activeFilters.district);
+        }
+
+        if (activeFilters.period) {
+            params.set('period', activeFilters.period);
+        }
+
+        return restUrl + '?' + params.toString();
     }
 
-    if (enableShuffle && markers.length) {
-        startShuffle();
-    } else {
-        stopShuffle();
+    function fetchStories() {
+        if (!restUrl || !markersEnabled) {
+            return;
+        }
+
+        var endpoint = buildStoryQuery();
+        if (!endpoint) {
+            return;
+        }
+
+        if (activeRequest) {
+            activeRequest.abort();
+        }
+
+        activeRequest = new AbortController();
+
+        fetch(endpoint, { signal: activeRequest.signal })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                if (!Array.isArray(data)) {
+                    return;
+                }
+                renderMarkers(data);
+            })
+            .catch(function (error) {
+                if (error.name === 'AbortError') {
+                    return;
+                }
+                console.error('No se pudieron cargar las historias:', error);
+            });
     }
+
+    updateToggleButton();
+    fetchStories();
+    map.on('moveend', fetchStories);
 
     if (enableToggle && toggleButton) {
         toggleButton.addEventListener('click', function () {
-            if (shuffleActive) {
-                stopShuffle();
+            markersEnabled = !markersEnabled;
+            updateToggleButton();
+            if (markersEnabled) {
+                fetchStories();
             } else {
-                startShuffle();
+                clearMarkers();
             }
         });
     }
@@ -255,6 +266,8 @@ document.addEventListener('DOMContentLoaded', function () {
     setupDropdown(districtDropdown, districtTrigger, function (target) {
         var districtName = target.getAttribute('data-district');
         highlightDistrict(districtName);
+        activeFilters.district = districtName || '';
+        fetchStories();
     });
 
     setupDropdown(neighborhoodDropdown, neighborhoodTrigger, function (target) {

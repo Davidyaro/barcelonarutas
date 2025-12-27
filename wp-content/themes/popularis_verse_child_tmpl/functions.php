@@ -55,9 +55,10 @@ endif;
 
 add_action('after_setup_theme', 'popularis_verse_setup');
 
-// OJO: deja esta línea SOLO si existe la función popularis_customizer() (en el parent o en un plugin).
-// Si no existe, te dará un fatal error.
-add_action('init', 'popularis_customizer');
+// OJO: engancha el customizer solo si existe la función (en el parent o en un plugin).
+if (function_exists('popularis_customizer')) {
+    add_action('init', 'popularis_customizer');
+}
 
 if (!function_exists('popularis_verse_excerpt_length')) :
 
